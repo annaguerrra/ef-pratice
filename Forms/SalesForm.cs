@@ -1,18 +1,45 @@
+using System.Data.Common;
+using Data;
+using Microsoft.EntityFrameworkCore;
+
 public class SalesForm : Form
 {
     async Task Buy(int productId, int userId)
     {
-        // TODO
+        var db = await ExampleDbContext.Create();
+        var target = await db.ProductItems
+            .Include(p => p.Sales)
+            .Where(p => p.ID == productId)
+            .Select(u => u. == userId)
+            .FirstOrDefaultAsync();
+
+        foreach (var item in target)
+        {
+
+        }
     }
 
     async Task LoadData(int productId)
     {
         Clear();
+        var db = await ExampleDbContext.Create();
+        var target = await db.ProductItems
+            .Include(p => p.Sales)
+            .ThenInclude(s => s.UserData)
+            .Where(p => p.ID == productId)
+            .FirstOrDefaultAsync();
 
-        // TODO
+        foreach (var sale in target.Sales)
+        {
+            Add(
+                target.Name,
+                sale.UserData.Username,
+                sale.BuyDate.ToShortDateString()
+            );
+        }
 
-        Add("bico", "trevis", "07/07/2025 10:55");
-        Add("bico", "cristian", "07/07/2025 11:05");
+        // Add("bico", "trevis", "07/07/2025 10:55");
+        // Add("bico", "cristian", "07/07/2025 11:05");
     }
 
     DataGridView table;

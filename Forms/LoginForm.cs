@@ -1,3 +1,5 @@
+using Data;
+
 public class LoginForm : Form
 {
     async Task OnClick()
@@ -6,6 +8,7 @@ public class LoginForm : Form
         var password = tbPassword.Text;
 
         // TODO
+        var db = await ExampleDbContext.Create();
 
         var userId = -1;
         var productForm = new ProductForm(userId);

@@ -2,7 +2,7 @@ public class ChartForm : Form
 {
     async Task<List<Item>> LoadData()
     {
-        // TODO
+        // agrupar por produto
 
         return [
             new Item("bico", 2),

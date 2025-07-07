@@ -1,10 +1,19 @@
+using System.Data.Common;
+using Data;
+using Microsoft.EntityFrameworkCore;
+
 public class ProductForm : Form
 {
     async Task<bool> IsAdm(int userId)
     {
-        // TODO
+        var db = await ExampleDbContext.Create();
+        var query = await db
+            .UserDatas
+            .Where(u => u.ID == userId)
+            .Select(u => u.IsAdm)
+            .FirstOrDefaultAsync();
 
-        return true;
+        return query;
     }
 
     async Task LoadData()
@@ -12,14 +21,18 @@ public class ProductForm : Form
         Clear();
 
         // TODO
-
+        
         Add(1, "bico", 100);
         Add(2, "injetor", 300);
     }
 
     async Task DeleteById(int id)
     {
-        // TODO
+        var db = await ExampleDbContext.Create();
+        var query =
+            db.UserDatas
+                .Where(u => u.ID == id);
+        db.Remove(query);    
     }
 
     int userId;

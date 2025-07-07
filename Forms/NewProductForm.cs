@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using Data;
 
 public class NewProductForm : Form
 {
@@ -6,8 +7,13 @@ public class NewProductForm : Form
     {
         string name = Name;
         decimal price = Price;
-        
-        // TODO
+
+        var NewProduct = new ProductItens { Name = name, Price = price };
+
+        var db = await ExampleDbContext.Create();
+        db.Add(NewProduct);
+        await db.SaveChangesAsync();
+        Close();
     }
 
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
