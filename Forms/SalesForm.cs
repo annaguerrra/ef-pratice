@@ -7,16 +7,8 @@ public class SalesForm : Form
     async Task Buy(int productId, int userId)
     {
         var db = await ExampleDbContext.Create();
-        var target = await db.ProductItems
-            .Include(p => p.Sales)
-            .Where(p => p.ID == productId)
-            .Select(u => u. == userId)
-            .FirstOrDefaultAsync();
-
-        foreach (var item in target)
-        {
-
-        }
+        var sale = new Sale { ProductItemID = productId, UserDataID = userId, BuyDate = DateTime.Now };
+        db.Add(sale);
     }
 
     async Task LoadData(int productId)
@@ -27,12 +19,14 @@ public class SalesForm : Form
             .Include(p => p.Sales)
             .ThenInclude(s => s.UserData)
             .Where(p => p.ID == productId)
-            .FirstOrDefaultAsync();
+            .SelectMany(s => s.Sales)
+            .ToListAsync();
 
-        foreach (var sale in target.Sales)
+
+        foreach (var sale in target)
         {
-            Add(
-                target.Name,
+            Add( 
+                sale.ProductItem.Name,
                 sale.UserData.Username,
                 sale.BuyDate.ToShortDateString()
             );

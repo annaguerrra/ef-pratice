@@ -9,11 +9,16 @@ public class LoginForm : Form
 
         // TODO
         var db = await ExampleDbContext.Create();
-
-        var userId = -1;
-        var productForm = new ProductForm(userId);
-        productForm.Show();
-        Hide();
+        foreach (var user in db.UserDatas)
+        {
+            if (user.Username == username && user.Pass == password)
+            {
+                var userId = user.ID;
+                var productForm = new ProductForm(userId);
+                productForm.Show();
+            }
+            Hide();
+        }
     }
 
     TextBox tbUsername;
